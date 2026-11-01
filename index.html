@@ -138,6 +138,15 @@ a.q1 { color: var(--q1); } a.q2 { color: var(--q2); } a.q3 { color: var(--q3); }
 
 <script src="assets/wowhead.js"></script>
 <script src="dungeons/ruins-of-lordaeron.data.js"></script>
+<script src="dungeons/ragefire-chasm.data.js"></script>
+<script src="dungeons/wailing-caverns.data.js"></script>
+<script src="dungeons/shadowfang-keep.data.js"></script>
+<script src="dungeons/blackfathom-deeps.data.js"></script>
+<script src="dungeons/excavation-site.data.js"></script>
+<script src="dungeons/city-of-dalaran.data.js"></script>
+<script src="dungeons/razorfen-kraul.data.js"></script>
+<script src="dungeons/scarlet-monastery.data.js"></script>
+<script src="dungeons/razorfen-downs.data.js"></script>
 <script src="assets/items.js"></script>
 <script>
 // Zones: questing spine. lv = [start, end] you'd actually be there.
@@ -169,35 +178,35 @@ const ZONES = [
 
 // Dungeons: go = the window to run it on this route; rng = listed range.
 const DUNGEONS = [
-  { go: [16, 18], rng: '13–18', name: 'Ragefire Chasm', where: 'Orgrimmar (Cleft of Shadow)',
+  { go: [16, 18], rng: '13–18', name: 'Ragefire Chasm', page: 'dungeons/ragefire-chasm.html', data: 'ragefire-chasm', where: 'Orgrimmar (Cleft of Shadow)',
     why: 'Short, Horde-only, six quests. Varimathras\'s quest starts in Undercity, so it\'s on your way.',
     quests: ['The Power to Destroy… (Varimathras, Undercity): leg armor', 'Hidden Enemies (Thrall, Orgrimmar): Kris, Hammer, Axe or Staff of Orgrimmar', 'Searching for / Returning the Lost Satchel (Thunder Bluff): bracers', 'Testing an Enemy\'s Strength, Slaying the Beast: experience'] },
   { go: [15, 17], ph: 0, rng: '15–20', name: 'Ruins of Lordaeron', page: 'dungeons/ruins-of-lordaeron.html', data: 'ruins-of-lordaeron', where: 'Above the Undercity, Tirisfal Glades', isNew: true,
     why: 'Built for Undead: every Horde quest starts in Tirisfal, Undercity or Silverpine, and the weapon rewards are strong. Run it right after Silverpine, before you leave for the Barrens.',
     quests: ['The Wrath of Rath\'mael (Deathguard Kristof, Tirisfal): Forsaken Greataxe or Gnarled Necromancer\'s Staff', 'Unending Torment (drops from The Baron): Monstrous Cleaver, Grave Shroud or Slain Baron\'s Signet', 'Light\'s Justice (Morbin Lightbane, Undercity): The Stitcher or Spare Part Bindings', 'The New Plague (Theodore Griffs, Undercity): Plaguefang or Blight Gloves', 'A Frightened Request (Tabitha Heartweaver, Silverpine): Edward\'s Knife or Tabitha\'s Cuffs', 'Crest of Lordaeron (item spawns somewhere inside): Small Sack of Gems'] },
-  { go: [19, 22], rng: '17–24', name: 'Wailing Caverns', where: 'The Barrens, near Lushwater Oasis',
+  { go: [19, 22], rng: '17–24', name: 'Wailing Caverns', page: 'dungeons/wailing-caverns.html', data: 'wailing-caverns', where: 'The Barrens, near Lushwater Oasis',
     why: 'Lots of quests, mostly picked up in the Barrens you\'re already in.',
     quests: ['Leaders of the Fang (Nara Wildmane, Thunder Bluff): Crescent Staff, Wingblade or Hammerbone', 'Serpentbloom (Apothecary Zamah, Thunder Bluff): gloves or boots', 'Deviate Hides (Nalpak, Lushwater Oasis): Deviate Hide Pack or Slick Deviate Leggings', 'Deviate Eradication (Ebru, Lushwater Oasis)', 'The Glowing Shard (drops from Mutanus)', 'Trouble at the Docks, Smart Drinks (Ratchet): experience'] },
-  { go: [23, 26], rng: '22–30', name: 'Shadowfang Keep', where: 'Silverpine Forest',
+  { go: [23, 26], rng: '22–30', name: 'Shadowfang Keep', page: 'dungeons/shadowfang-keep.html', data: 'shadowfang-keep', where: 'Silverpine Forest',
     why: 'Horde-only quests from Silverpine and Undercity. The ring is a keeper.',
     quests: ['Arugal Must Die (Dalar Dawnweaver, Silverpine): Seal of Sylvanas', 'Deathstalkers in Shadowfang (High Executor Hadrec, Silverpine): shoulders', 'The Book of Ur (Keeper Bel\'dugur, Undercity): gloves, boots or bracers', 'Warlock: The Orb of Soran\'ruk (Doan Karhan, Barrens)'] },
-  { go: [25, 28], rng: '24–32', name: 'Blackfathom Deeps', where: 'Ashenvale coast (Zoram\'gar Outpost nearby)',
+  { go: [25, 28], rng: '24–32', name: 'Blackfathom Deeps', page: 'dungeons/blackfathom-deeps.html', data: 'blackfathom-deeps', where: 'Ashenvale coast (Zoram\'gar Outpost nearby)',
     why: 'Fits your Ashenvale leg: Zoram\'gar gives three of the quests.',
     quests: ['Blackfathom Villainy (inside, turn in at Thunder Bluff): Gravestone Scepter and others', 'Baron Aquanis (drops from the Baron): Outlaw Sabre, Witch\'s Finger or Dreamer\'s Chestguard', 'Allegiance to the Old Gods (Je\'neu Sancrea, Zoram\'gar): Band of the Fist or Chestnut Mantle', 'The Essence of Aku\'Mai, Amongst the Ruins (Zoram\'gar): experience', 'Paladin: Seeking the Kor Gem (Zoram\'gar): Wolfsbane', 'Warlock: The Orb of Soran\'ruk continues here'] },
-  { go: [27, 30], rng: '24–31', name: 'Excavation Site', where: 'Wetlands, near Thelgen Rock', isNew: true,
+  { go: [27, 30], rng: '24–31', name: 'Excavation Site', page: 'dungeons/excavation-site.html', data: 'excavation-site', where: 'Wetlands, near Thelgen Rock', isNew: true,
     why: 'A short trip from Hammerfall. Worth it if you have a group; skippable if not.',
     quests: ['Elder Knowledge (Titan Relic drop inside): Heavehammer, Healer\'s Staff or Furs of the Earthen Ring', 'Dragonmaw Rumors → Open the Maw (Zaruk, Hammerfall)', 'Changing Tastes (Borstan, Orgrimmar): Satchel of Potions or Serrated Raptor Claw'] },
-  { go: [29, 33], rng: '28–33', name: 'City of Dalaran', where: 'Alterac Mountains (sewer entrance)', isNew: true,
+  { go: [29, 33], rng: '28–33', name: 'City of Dalaran', page: 'dungeons/city-of-dalaran.html', data: 'city-of-dalaran', where: 'Alterac Mountains (sewer entrance)', isNew: true,
     why: 'Undead-friendly: the attunement and two quests start in Tarren Mill and Undercity. Start the chain during your Hillsbrad leg.',
     quests: ['Key to the City → Prison Break-In (Magus Wordeen Voidglare, Tarren Mill): attunement, needs the Dalaran Sewer Key', 'Heart of Disruption (end of the chain): Battle Spaulders, Enchanted Sandals or Striking Staff', 'The Grave Knight (Melisara, Tarren Mill): boots or bracers', 'Source of Power (Doctor Martin Felben, Undercity): Unstable Power Core or Construct Cloak', 'Opportunistic Education (sewer entrance): Solid Gold Band or Larcenist\'s Belt'] },
-  { go: [30, 33], rng: '29–38', name: 'Razorfen Kraul', where: 'Southern Barrens',
+  { go: [30, 33], rng: '29–38', name: 'Razorfen Kraul', page: 'dungeons/razorfen-kraul.html', data: 'razorfen-kraul', where: 'Southern Barrens',
     why: 'Optional. Several quests start in Thunder Bluff and the Barrens. Skip if Dalaran filled this window.' },
-  { go: [32, 42], rng: '30–45', name: 'Scarlet Monastery', where: 'Tirisfal Glades, a flight from Undercity',
+  { go: [32, 42], rng: '30–45', name: 'Scarlet Monastery', page: 'dungeons/scarlet-monastery.html', data: 'scarlet-monastery', where: 'Tirisfal Glades, a flight from Undercity',
     why: 'The best leveling dungeon in the game for Horde, ten minutes from home. Run the wings in order as you level: Graveyard (~32), Library (~35), Armory (~37), Cathedral (~39). Quests come from Undercity and Thunder Bluff.',
     quests: ['Into the Scarlet Monastery (Varimathras, Undercity): kill the bosses through the Cathedral', 'Library: Compendium of the Fallen and other Undercity book quests', 'Drops worth chasing: Ravager (Herod), Mograine\'s Might, Whitemane\'s Chapeau'] },
   { go: [37, 40], rng: '35–40', name: 'The Drowned City', where: 'Off the Stranglethorn coast, west of Grom\'gol (dive for the entrance)', isNew: true,
     why: 'Right next to Grom\'gol during your Stranglethorn leg. An open-air troll and naga ruin with a storm before the last boss.' },
-  { go: [38, 41], rng: '37–46', name: 'Razorfen Downs', where: 'Southern Barrens / Thousand Needles border',
+  { go: [38, 41], rng: '37–46', name: 'Razorfen Downs', page: 'dungeons/razorfen-downs.html', data: 'razorfen-downs', where: 'Southern Barrens / Thousand Needles border',
     why: 'Optional. Pairs with a trip back through the Barrens; skip if the Drowned City and SM covered this range.' },
   { go: [41, 44], rng: '40–45', name: 'Krol\'dok Stronghold', where: 'Riverglades', isNew: true,
     why: 'Run it from Rog\'mar while you quest Riverglades. A big ogre fortress; expect a longer run.' },
@@ -261,7 +270,7 @@ function questList(d) {
   const D = d.data && window.DUNGEON_DATA && DUNGEON_DATA[d.data];
   if (D && window.WHI) {
     const { questLink, npcLink, itemLink, esc: e } = WHI;
-    return `<ul>${D.quests.filter(q => q.f === 'Horde').map(q => {
+    return `<ul>${D.quests.filter(q => q.f !== 'Alliance').map(q => {
       const from = q.giver ? `${npcLink(q.giver, q.giverId)}, ${e(q.where.replace(/ \(.*\)$/, ''))}` : e(q.start.replace(/\.$/, '').replace(/^Starts/, 'starts'));
       const links = q.rewards.map(itemLink);
       const rw = !links.length ? 'experience' : links.length < 3 ? links.join(' or ') : links.slice(0, -1).join(', ') + ' or ' + links.at(-1);

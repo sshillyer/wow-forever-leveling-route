@@ -15,7 +15,7 @@
   function itemLink(it) {
     const k = ITEMS.push(it) - 1;
     return it.id
-      ? `<a class="q${it.q || 1}" data-tt="${k}" href="${WH}item=${it.id}/${slug(it.n)}" target="_blank" rel="noopener">${esc(it.n)}</a>`
+      ? `<a class="q${it.q || 1}" data-tt="${k}" href="${it.env ? WH.replace('forever', it.env) : WH}item=${it.id}/${slug(it.n)}" target="_blank" rel="noopener">${esc(it.n)}</a>`
       : `<span class="nolink">${esc(it.n)}</span> <a class="find" href="${search(it.n)}" target="_blank" rel="noopener" title="Search Wowhead for ${esc(it.n)}">search ↗</a>`;
   }
   const questLink = q => `<a href="${WH}quest=${q.id}/${slug(q.n)}" target="_blank" rel="noopener">${esc(q.n)}</a>`;
