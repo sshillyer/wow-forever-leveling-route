@@ -44,7 +44,7 @@
     const shown = items.filter(usable);
     if (!items.length) return '<p class="none">Experience only.</p>';
     if (!shown.length) return `<p class="none">Nothing here for a ${esc(cls)}.</p>`;
-    return `<ul class="items">${shown.map(it => `<li>${itemLink(it)}<span class="ty">${esc(typeLabel(it))}</span></li>`).join('')}</ul>`;
+    return `<ul class="items">${shown.map(it => `<li>${itemLink(it)}<span class="ty">${esc(typeLabel(it))}${it.pct ? ` · ${it.pct}%` : ''}</span></li>`).join('')}</ul>`;
   }
   const npc = (name, where, id) => npcLink(name, id) + (where ? `, ${esc(where)}` : '');
 
@@ -60,10 +60,10 @@
         `<button type="button" class="chip noicon" data-fac="${f}" aria-pressed="${fac === f}">${f}</button>`).join('');
 
     // quests
-    const qs = D.quests.filter(q => fac === 'Both' || q.f === fac);
+    const qs = D.quests.filter(q => fac === 'Both' || q.f === fac || q.f === 'Both');
     document.getElementById('quests').innerHTML = qs.map(q => `<article class="card">
       <h3>${questLink(q)}
-        ${fac === 'Both' ? `<span class="fac ${q.f}">${q.f}</span>` : ''}${q.lv ? `<span class="qlv">level ${q.qlv || '?'} · req. ${q.lv}</span>` : ''}</h3>
+        ${fac === 'Both' || q.f === 'Both' ? `<span class="fac ${q.f}">${q.f === 'Both' ? 'Both factions' : q.f}</span>` : ''}${q.lv ? `<span class="qlv">level ${q.qlv || '?'} · req. ${q.lv}</span>` : ''}</h3>
       <p class="sub giver">${q.giver ? `From ${npc(q.giver, q.where, q.giverId)}` : esc(q.start)}</p>
       ${q.turnin ? `<p class="sub">Turn in: ${npc(q.turnin, q.turninWhere, q.turninId)}</p>` : ''}
       <p>${esc(q.obj)}</p>
