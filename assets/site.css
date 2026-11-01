@@ -1,5 +1,6 @@
 /* Shared styles for the dungeon pages. Same palette as the route overview. */
 :root {
+  --q1: #2a241b; --q2: #1a8a00; --q3: #0060c0; --q4: #8a2fc8;
   --bg: #f3efe6; --panel: #fbf8f1; --fg: #2a241b; --muted: #74695a; --line: #d9cfbd; --gold: #8a6416; --rowalt: #f1ebdf;
   --horde: #8c1c13; --alliance: #1f4f9e; --dung: #7a3fa0; --new: #c2560e;
   --display: 'Cinzel', 'Trajan Pro', Georgia, serif;
@@ -8,10 +9,10 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #15120e; --panel: #1d1914; --fg: #ece3d0; --muted: #a39782; --line: #3a3228; --gold: #d8ad55; --rowalt: #211c16;
-  --horde: #d9564a; --alliance: #6f9bff; --dung: #b98ae0; --new: #ff9a4d; color-scheme: dark } }
+  --horde: #d9564a; --alliance: #6f9bff; --dung: #b98ae0; --new: #ff9a4d; --q1: #ece3d0; --q2: #1eff00; --q3: #3d9bff; --q4: #b46cff; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #15120e; --panel: #1d1914; --fg: #ece3d0; --muted: #a39782; --line: #3a3228; --gold: #d8ad55; --rowalt: #211c16;
-  --horde: #d9564a; --alliance: #6f9bff; --dung: #b98ae0; --new: #ff9a4d; color-scheme: dark }
+  --horde: #d9564a; --alliance: #6f9bff; --dung: #b98ae0; --new: #ff9a4d; --q1: #ece3d0; --q2: #1eff00; --q3: #3d9bff; --q4: #b46cff; color-scheme: dark }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -64,3 +65,15 @@ h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; margin: 
 .foot { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; display: grid; gap: 6px; }
 .foot ul { margin: 0; padding-left: 18px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* item quality colors (also used by our own tooltip) */
+a.q1, b.q1 { color: var(--q1); } a.q2, b.q2 { color: var(--q2); } a.q3, b.q3 { color: var(--q3); } a.q4, b.q4 { color: var(--q4); }
+a.boss { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a.boss:hover { color: var(--gold); }
+.tt { position: fixed; z-index: 50; max-width: 320px; background: #0b0d1f; color: #f2f2f2; border: 1px solid #5a5f7a; border-radius: 5px;
+  padding: 8px 10px; font: 14px/1.35 Verdana, Geneva, sans-serif; box-shadow: 0 4px 16px rgba(0,0,0,.45); display: grid; gap: 1px; pointer-events: none; }
+.tt b { font-weight: 400; font-size: 15px; }
+.tt b.q1 { color: #fff; } .tt b.q2 { color: #1eff00; } .tt b.q3 { color: #0070dd; } .tt b.q4 { color: #a335ee; }
+.tt .tl { color: #ffd100; }
+.tt .tr { display: flex; justify-content: space-between; gap: 16px; }
+.tt .tg { color: #1eff00; }
