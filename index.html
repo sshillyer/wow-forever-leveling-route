@@ -1,0 +1,258 @@
+<title>Horde Leveling Route</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: a 1-60 level ruler (zones and dungeons as bars) on top, then one block per level phase with zone steps on the left and dungeon slots on the right. */
+:root {
+  --bg: #f3efe6; --panel: #fbf8f1; --fg: #2a241b; --muted: #74695a; --line: #d9cfbd; --gold: #8a6416; --rowalt: #f1ebdf;
+  --horde: #8c1c13; --zone: #5b7a3a; --dung: #7a3fa0; --new: #c2560e;
+  --display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --body: 'Crimson Text', Georgia, 'Times New Roman', serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15120e; --panel: #1d1914; --fg: #ece3d0; --muted: #a39782; --line: #3a3228; --gold: #d8ad55; --rowalt: #211c16;
+  --horde: #d9564a; --zone: #8fb862; --dung: #b98ae0; --new: #ff9a4d; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15120e; --panel: #1d1914; --fg: #ece3d0; --muted: #a39782; --line: #3a3228; --gold: #d8ad55; --rowalt: #211c16;
+  --horde: #d9564a; --zone: #8fb862; --dung: #b98ae0; --new: #ff9a4d; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.45; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+a { color: var(--gold); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 3px; }
+header { margin-bottom: 22px; border-bottom: 2px solid var(--gold); padding-bottom: 16px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spacing: .04em; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 72ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: .9rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 14px; height: 10px; border-radius: 2px; display: inline-block; }
+.sw.z { background: var(--zone); } .sw.d { background: var(--dung); }
+.newtag { font: 600 .66rem var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--new); border: 1px solid var(--new); border-radius: 3px; padding: 0 4px; white-space: nowrap; }
+
+/* ruler */
+.ruler-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 12px 14px 8px; margin-bottom: 30px; }
+.ruler { position: relative; min-width: 900px; }
+.ticks { position: relative; height: 18px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.ticks span { position: absolute; transform: translateX(-50%); font: .7rem var(--mono); color: var(--muted); }
+.lane { position: relative; height: 22px; margin-bottom: 4px; }
+.bar { position: absolute; top: 0; height: 20px; border-radius: 3px; font-size: .74rem; line-height: 20px; padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; text-decoration: none; }
+.bar.z { background: var(--zone); } .bar.d { background: var(--dung); }
+.bar.n { box-shadow: inset 0 0 0 2px var(--new); }
+:root:not([data-theme="light"]) .bar { color: #14110c; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .bar { color: #fff; } }
+:root[data-theme="light"] .bar { color: #fff; }
+.lane-label { font: 600 .68rem var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 6px 0 3px; }
+
+/* phases */
+.phase { margin-top: 34px; }
+.phase-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 12px; }
+.phase-head h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; margin: 0; }
+.phase-head .lv { font: .8rem var(--mono); color: var(--gold); }
+.phase-head p { margin: 0; color: var(--muted); flex-basis: 100%; max-width: 75ch; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.colh { font: 600 .72rem var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.steps { list-style: none; margin: 0; padding: 0; border-left: 3px solid var(--zone); }
+.steps li { padding: 6px 0 10px 14px; position: relative; }
+.steps li::before { content: ""; position: absolute; left: -8px; top: 12px; width: 13px; height: 13px; border-radius: 50%; background: var(--bg); border: 3px solid var(--zone); }
+.steps .lvl { font: .75rem var(--mono); color: var(--muted); }
+.steps b { font-weight: 600; }
+.steps .hub { color: var(--muted); font-size: .92rem; display: block; }
+.steps .tip { font-size: .92rem; display: block; }
+.dcards { display: grid; gap: 10px; }
+.dcard { border: 1px solid var(--line); border-left: 4px solid var(--dung); border-radius: 6px; background: var(--panel); padding: 10px 14px; min-width: 0; }
+.dcard.n { border-left-color: var(--new); }
+.dtop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.dtop b { font-size: 1.08rem; }
+.dtop .when { font: .75rem var(--mono); color: var(--dung); }
+.dcard.n .when { color: var(--new); }
+.dtop .rng { font: .72rem var(--mono); color: var(--muted); }
+.dcard .where { color: var(--muted); font-size: .9rem; margin: 2px 0 6px; }
+.dcard p { margin: 4px 0 0; font-size: .95rem; }
+.dcard .k { font-weight: 600; }
+.dcard ul { margin: 4px 0 0; padding-left: 18px; font-size: .93rem; }
+.dcard li { margin: 1px 0; }
+.dcard .skip { color: var(--muted); font-style: italic; }
+.notes { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: .92rem; display: grid; gap: 8px; max-width: 80ch; }
+.notes h2 { font-family: var(--display); font-size: 1.1rem; color: var(--fg); margin: 0; }
+.notes ul { margin: 0; padding-left: 18px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Horde Leveling Route</h1>
+    <p class="lede">Undead start, Tirisfal to 60. The questing spine is the classic Horde route that TUGs and most guides follow, with Forever's new zones and dungeons slotted in. Dungeon slots are placed where their Horde quests are on your path and their rewards still matter.</p>
+    <div class="legend">
+      <span><i class="sw z"></i>Questing zone</span>
+      <span><i class="sw d"></i>Dungeon slot</span>
+      <span><span class="newtag">New</span> New in Forever</span>
+    </div>
+  </header>
+
+  <div class="ruler-wrap"><div class="ruler" id="ruler"></div></div>
+  <div id="phases"></div>
+
+  <section class="notes">
+    <h2>How to use this</h2>
+    <ul>
+      <li>Keep TUGs running for the step-by-step. This page is the overview: which zone you should be in, and which dungeon to fit in around it.</li>
+      <li>Pick up a dungeon's quests on your way through its hub, then run it once you're in the "go" window. Most early quest rewards are blues or strong greens that carry you for 8 to 10 levels.</li>
+      <li>Your dualbox pairs can't clear these alone. Plan one group run per dungeon with all its quests in hand.</li>
+      <li>Level ranges for the new Forever dungeons differ a little between sources (Excavation Site is listed as 24 to 29 and 26 to 31, for example). Windows here use the middle of what sources agree on.</li>
+      <li>Quest data for the early dungeons comes from the October 8 beta build. Check it on the launch client.</li>
+    </ul>
+    <h2>Sources</h2>
+    <ul>
+      <li><a href="https://wowhandbook.com/leveling/horde/" target="_blank" rel="noopener">WoW Forever Horde Leveling Route – WoW Handbook</a></li>
+      <li><a href="https://theforeverera.com/en/guides/leveling/" target="_blank" rel="noopener">WoW Forever leveling guide 1 to 60 – The Forever Era</a></li>
+      <li><a href="https://conquestcapped.com/guides/wow-forever/wow-forever-dungeon-quests/" target="_blank" rel="noopener">WoW Forever Dungeon Quests – Conquest Capped</a></li>
+      <li><a href="https://worldofwarcraft.blizzard.com/en-us/news/24301455" target="_blank" rel="noopener">Explore the New Dungeons of World of Warcraft: Forever – Blizzard</a></li>
+      <li><a href="https://leprestore.com/guides/world-of-warcraft-forever/wow-forever-riverglades-guide/" target="_blank" rel="noopener">WoW Forever Riverglades Guide – Leprestore</a></li>
+      <li><a href="https://www.warcrafttavern.com/wow-classic/guides/horde-leveling-guide/" target="_blank" rel="noopener">Nightfall's WoW Classic Horde Leveling Guide – Warcraft Tavern</a></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+// Zones: questing spine. lv = [start, end] you'd actually be there.
+const ZONES = [
+  { lv: [1, 6], name: 'Tirisfal Glades: Deathknell', hub: 'Deathknell', tip: 'Starting area. Class trainers and your first quests.' },
+  { lv: [6, 10], name: 'Tirisfal Glades: Brill', hub: 'Brill', tip: 'Set hearth in Brill. Grab the Undercity flight path.' },
+  { lv: [10, 15], name: 'Silverpine Forest', hub: 'The Sepulcher', tip: 'Pick up the Ruins of Lordaeron quest from Tabitha Heartweaver here. Most Undead head to the Barrens around 12 to 14; staying to 15 lines you up for the Ruins.' },
+  { lv: [16, 20], name: 'The Barrens', hub: 'The Crossroads, Ratchet', tip: 'Zeppelin to Orgrimmar. Collect Wailing Caverns and Ratchet quests as you go.' },
+  { lv: [20, 23], name: 'Stonetalon Mountains', hub: 'Sun Rock Retreat' },
+  { lv: [23, 26], name: 'Ashenvale', hub: 'Splintertree Post, Zoram\'gar Outpost', tip: 'Zoram\'gar gives the Blackfathom Deeps quests.' },
+  { lv: [26, 30], name: 'Hillsbrad Foothills', hub: 'Tarren Mill', tip: 'Start the City of Dalaran attunement here ("Key to the City").' },
+  { lv: [28, 31], name: 'Thousand Needles', hub: 'Freewind Post', tip: 'The Shimmering Flats racing quests lead into Zul\'Farrak later.' },
+  { lv: [30, 34], name: 'Arathi Highlands', hub: 'Hammerfall', tip: 'Hammerfall gives the Excavation Site lead ("Dragonmaw Rumors").' },
+  { lv: [32, 36], name: 'Desolace', hub: 'Shadowprey Village' },
+  { lv: [35, 40], name: 'Stranglethorn Vale', hub: 'Grom\'gol, Booty Bay', tip: 'The Drowned City sits just off the coast west of Grom\'gol.' },
+  { lv: [36, 44], name: 'Riverglades', hub: 'Rog\'mar, Powderfuse Port', isNew: true, tip: 'New zone east of Redridge, north of Swamp of Sorrows. A fresh alternative to Dustwallow, Badlands and Swamp of Sorrows. Home of Krol\'dok Stronghold.' },
+  { lv: [38, 42], name: 'Dustwallow Marsh / Badlands', hub: 'Brackenwall Village, Kargath', tip: 'Use whichever Riverglades doesn\'t cover. Kargath is your Uldaman base.' },
+  { lv: [42, 46], name: 'Tanaris', hub: 'Gadgetzan', tip: 'Zul\'Farrak quests, including Gahz\'rilla for Carrot on a Stick.' },
+  { lv: [44, 47], name: 'Feralas', hub: 'Camp Mojache' },
+  { lv: [46, 48], name: 'The Hinterlands', hub: 'Revantusk Village' },
+  { lv: [48, 51], name: 'Searing Gorge / Un\'Goro Crater', hub: 'Thorium Point, Marshal\'s Refuge', tip: 'Collect Un\'Goro power crystals as you go. Shaper\'s Terrace uses them at 58+.' },
+  { lv: [50, 52], name: 'Azshara', hub: 'Valormok' },
+  { lv: [51, 54], name: 'Felwood', hub: 'Bloodvenom Post' },
+  { lv: [53, 55], name: 'Burning Steppes', hub: 'Flame Crest', tip: 'Also the doorstep for Blackrock Depths and Spire.' },
+  { lv: [54, 57], name: 'Winterspring', hub: 'Everlook' },
+  { lv: [55, 58], name: 'Western & Eastern Plaguelands', hub: 'The Bulwark, Light\'s Hope Chapel' },
+  { lv: [57, 60], name: 'Silithus / Winterspring', hub: 'Cenarion Hold, Everlook', tip: 'Mop up remaining quests to ding 60. Mount Hyjal opens at 60.' }
+];
+
+// Dungeons: go = the window to run it on this route; rng = listed range.
+const DUNGEONS = [
+  { go: [16, 18], rng: '13–18', name: 'Ragefire Chasm', where: 'Orgrimmar (Cleft of Shadow)',
+    why: 'Short, Horde-only, six quests. Varimathras\'s quest starts in Undercity, so it\'s on your way.',
+    quests: ['The Power to Destroy… (Varimathras, Undercity): leg armor', 'Hidden Enemies (Thrall, Orgrimmar): Kris, Hammer, Axe or Staff of Orgrimmar', 'Searching for / Returning the Lost Satchel (Thunder Bluff): bracers', 'Testing an Enemy\'s Strength, Slaying the Beast: experience'] },
+  { go: [15, 17], ph: 0, rng: '15–20', name: 'Ruins of Lordaeron', where: 'Above the Undercity, Tirisfal Glades', isNew: true,
+    why: 'Built for Undead: every Horde quest starts in Tirisfal, Undercity or Silverpine, and the weapon rewards are strong. Run it right after Silverpine, before you leave for the Barrens.',
+    quests: ['The Wrath of Rath\'mael (Deathguard Kristof, Tirisfal): Forsaken Greataxe or Gnarled Necromancer\'s Staff', 'Unending Torment (drops from The Baron): Monstrous Cleaver, Grave Shroud or Slain Baron\'s Signet', 'Light\'s Justice (Morbin Lightbane, Undercity): The Stitcher or Spare Part Bindings', 'The New Plague (Theodore Griffs, Undercity): Plaguefang or Blight Gloves', 'A Frightened Request (Tabitha Heartweaver, Silverpine): Edward\'s Knife or Tabitha\'s Cuffs', 'Crest of Lordaeron (item spawns somewhere inside): Small Sack of Gems'] },
+  { go: [19, 22], rng: '17–24', name: 'Wailing Caverns', where: 'The Barrens, near Lushwater Oasis',
+    why: 'Lots of quests, mostly picked up in the Barrens you\'re already in.',
+    quests: ['Leaders of the Fang (Nara Wildmane, Thunder Bluff): Crescent Staff, Wingblade or Hammerbone', 'Serpentbloom (Apothecary Zamah, Thunder Bluff): gloves or boots', 'Deviate Hides (Nalpak, Lushwater Oasis): Deviate Hide Pack or Slick Deviate Leggings', 'Deviate Eradication (Ebru, Lushwater Oasis)', 'The Glowing Shard (drops from Mutanus)', 'Trouble at the Docks, Smart Drinks (Ratchet): experience'] },
+  { go: [23, 26], rng: '22–30', name: 'Shadowfang Keep', where: 'Silverpine Forest',
+    why: 'Horde-only quests from Silverpine and Undercity. The ring is a keeper.',
+    quests: ['Arugal Must Die (Dalar Dawnweaver, Silverpine): Seal of Sylvanas', 'Deathstalkers in Shadowfang (High Executor Hadrec, Silverpine): shoulders', 'The Book of Ur (Keeper Bel\'dugur, Undercity): gloves, boots or bracers', 'Warlock: The Orb of Soran\'ruk (Doan Karhan, Barrens)'] },
+  { go: [25, 28], rng: '24–32', name: 'Blackfathom Deeps', where: 'Ashenvale coast (Zoram\'gar Outpost nearby)',
+    why: 'Fits your Ashenvale leg: Zoram\'gar gives three of the quests.',
+    quests: ['Blackfathom Villainy (inside, turn in at Thunder Bluff): Gravestone Scepter and others', 'Baron Aquanis (drops from the Baron): Outlaw Sabre, Witch\'s Finger or Dreamer\'s Chestguard', 'Allegiance to the Old Gods (Je\'neu Sancrea, Zoram\'gar): Band of the Fist or Chestnut Mantle', 'The Essence of Aku\'Mai, Amongst the Ruins (Zoram\'gar): experience', 'Paladin: Seeking the Kor Gem (Zoram\'gar): Wolfsbane', 'Warlock: The Orb of Soran\'ruk continues here'] },
+  { go: [27, 30], rng: '24–31', name: 'Excavation Site', where: 'Wetlands, near Thelgen Rock', isNew: true,
+    why: 'A short trip from Hammerfall. Worth it if you have a group; skippable if not.',
+    quests: ['Elder Knowledge (Titan Relic drop inside): Heavehammer, Healer\'s Staff or Furs of the Earthen Ring', 'Dragonmaw Rumors → Open the Maw (Zaruk, Hammerfall)', 'Changing Tastes (Borstan, Orgrimmar): Satchel of Potions or Serrated Raptor Claw'] },
+  { go: [29, 33], rng: '28–33', name: 'City of Dalaran', where: 'Alterac Mountains (sewer entrance)', isNew: true,
+    why: 'Undead-friendly: the attunement and two quests start in Tarren Mill and Undercity. Start the chain during your Hillsbrad leg.',
+    quests: ['Key to the City → Prison Break-In (Magus Wordeen Voidglare, Tarren Mill): attunement, needs the Dalaran Sewer Key', 'Heart of Disruption (end of the chain): Battle Spaulders, Enchanted Sandals or Striking Staff', 'The Grave Knight (Melisara, Tarren Mill): boots or bracers', 'Source of Power (Doctor Martin Felben, Undercity): Unstable Power Core or Construct Cloak', 'Opportunistic Education (sewer entrance): Solid Gold Band or Larcenist\'s Belt'] },
+  { go: [30, 33], rng: '29–38', name: 'Razorfen Kraul', where: 'Southern Barrens',
+    why: 'Optional. Several quests start in Thunder Bluff and the Barrens. Skip if Dalaran filled this window.' },
+  { go: [32, 42], rng: '30–45', name: 'Scarlet Monastery', where: 'Tirisfal Glades, a flight from Undercity',
+    why: 'The best leveling dungeon in the game for Horde, ten minutes from home. Run the wings in order as you level: Graveyard (~32), Library (~35), Armory (~37), Cathedral (~39). Quests come from Undercity and Thunder Bluff.',
+    quests: ['Into the Scarlet Monastery (Varimathras, Undercity): kill the bosses through the Cathedral', 'Library: Compendium of the Fallen and other Undercity book quests', 'Drops worth chasing: Ravager (Herod), Mograine\'s Might, Whitemane\'s Chapeau'] },
+  { go: [37, 40], rng: '35–40', name: 'The Drowned City', where: 'Off the Stranglethorn coast, west of Grom\'gol (dive for the entrance)', isNew: true,
+    why: 'Right next to Grom\'gol during your Stranglethorn leg. An open-air troll and naga ruin with a storm before the last boss.' },
+  { go: [38, 41], rng: '37–46', name: 'Razorfen Downs', where: 'Southern Barrens / Thousand Needles border',
+    why: 'Optional. Pairs with a trip back through the Barrens; skip if the Drowned City and SM covered this range.' },
+  { go: [41, 44], rng: '40–45', name: 'Krol\'dok Stronghold', where: 'Riverglades', isNew: true,
+    why: 'Run it from Rog\'mar while you quest Riverglades. A big ogre fortress; expect a longer run.' },
+  { go: [44, 46], rng: '41–51', name: 'Uldaman', where: 'Badlands (Kargath is the Horde base)',
+    why: 'Quests from Kargath and the Badlands. Run it if your route goes through Badlands; otherwise go straight to Zul\'Farrak.' },
+  { go: [45, 48], rng: '44–54', name: 'Zul\'Farrak', where: 'Tanaris',
+    why: 'Must-do. The Gahz\'rilla quest from Wizzle Brassbolts (Shimmering Flats) rewards Carrot on a Stick, a mount-speed trinket you\'ll use until 60. Many quests from Gadgetzan and Tanaris.' },
+  { go: [47, 50], rng: '46–55', name: 'Maraudon', where: 'Desolace',
+    why: 'Corruption of Earth and Seed rewards a strong weapon or ring (Thrash Blade, Resurgence Rod or Mark of Resolution). The Princess run alone is a quick, efficient group.' },
+  { go: [49, 52], rng: '48–53', name: 'Alcaz Prison', where: 'Alcaz Island, Dustwallow Marsh', isNew: true,
+    why: 'Defias and naga in the old prison. Fly to Brackenwall and run it between Un\'Goro and Felwood.' },
+  { go: [51, 54], rng: '50–56', name: 'Temple of Atal\'Hakkar', where: 'Swamp of Sorrows (Stonard)',
+    why: 'Quests from Stonard and the Hinterlands. Good class quests for several classes.' },
+  { go: [53, 57], rng: '52–60', name: 'Blackrock Depths', where: 'Blackrock Mountain (Searing Gorge / Burning Steppes)',
+    why: 'Huge, full of quests and pre-raid gear. Plan several runs; Flame Crest and Kargath give most Horde quests.' },
+  { go: [55, 60], rng: '55–60', name: 'Lower Blackrock Spire, Dire Maul, Blackmaw Hold', where: 'Blackrock Mountain · Feralas · Azshara', isNew: true, newNote: 'Blackmaw Hold is new',
+    why: 'Pick based on group and gear. Blackmaw Hold is Forever\'s new furbolg city behind a sealed gate in Azshara.' },
+  { go: [58, 60], rng: '58–60', name: 'Stratholme, Scholomance, Upper Spire, Shaper\'s Terrace', where: 'Plaguelands · Blackrock · Un\'Goro', isNew: true, newNote: 'Shaper\'s Terrace is new',
+    why: 'Endgame dungeons. Shaper\'s Terrace needs Un\'Goro power crystals for its consoles, so keep any you find while questing.' }
+];
+
+const PHASES = [
+  { lv: [1, 16], name: 'Tirisfal and Silverpine', note: 'Undead homeland. Quest Silverpine to about 15, then run Ruins of Lordaeron while you\'re still next to Undercity, before heading to the Barrens.' },
+  { lv: [16, 20], name: 'The Barrens', note: 'Join the other Horde races. Ragefire Chasm and Wailing Caverns both fit here.' },
+  { lv: [20, 30], name: 'Stonetalon to Hillsbrad', note: 'The busiest dungeon stretch: Shadowfang, Blackfathom, the Excavation Site and the start of Dalaran.' },
+  { lv: [30, 40], name: 'Arathi to Stranglethorn', note: 'Scarlet Monastery carries this whole bracket. Riverglades is Forever\'s new zone for the late 30s.' },
+  { lv: [40, 50], name: 'Riverglades to Un\'Goro', note: 'Zul\'Farrak is the one not to skip. Krol\'dok, Uldaman and Maraudon fill the rest.' },
+  { lv: [50, 60], name: 'Felwood to the Plaguelands', note: 'Quest to 60 while you gear up in Blackrock Depths.' }
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const lvStr = ([a, b]) => `${a}–${b}`;
+const NEW = '<span class="newtag">New</span>';
+
+// Ruler: lanes packed so bars don't overlap.
+function pack(items, key) {
+  const lanes = [];
+  items.forEach(it => {
+    const [a, b] = it[key];
+    let lane = lanes.find(l => l.end < a);
+    if (!lane) { lane = { end: 0, items: [] }; lanes.push(lane); }
+    lane.items.push(it); lane.end = b;
+  });
+  return lanes;
+}
+function ruler() {
+  const pct = l => ((l - 1) / 59) * 100;
+  let html = '<div class="ticks">' + [1, 10, 20, 30, 40, 50, 60].map(l => `<span style="left:${pct(l)}%">${l}</span>`).join('') + '</div>';
+  const bar = (it, key, cls) => {
+    const [a, b] = it[key];
+    return `<a class="bar ${cls}${it.isNew ? ' n' : ''}" href="#${slug(it.name)}" style="left:${pct(a)}%;width:calc(${pct(b) - pct(a)}% - 2px)" title="${esc(it.name)} (${lvStr(it[key])})">${esc(it.name.replace(/^Tirisfal Glades: /, ''))}</a>`;
+  };
+  html += '<p class="lane-label">Questing</p>' + pack(ZONES, 'lv').map(l => `<div class="lane">${l.items.map(i => bar(i, 'lv', 'z')).join('')}</div>`).join('');
+  html += '<p class="lane-label">Dungeons</p>' + pack(DUNGEONS, 'go').map(l => `<div class="lane">${l.items.map(i => bar(i, 'go', 'd')).join('')}</div>`).join('');
+  document.getElementById('ruler').innerHTML = html;
+}
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+function phases() {
+  document.getElementById('phases').innerHTML = PHASES.map(ph => {
+    const [lo, hi] = ph.lv;
+    const idx = PHASES.indexOf(ph);
+    const zs = ZONES.filter(z => z.lv[0] >= lo && z.lv[0] < hi);
+    const ds = DUNGEONS.filter(d => d.ph != null ? d.ph === idx : (d.go[0] >= lo && d.go[0] < hi));
+    return `<section class="phase" aria-labelledby="ph-${lo}">
+      <div class="phase-head"><h2 id="ph-${lo}">${esc(ph.name)}</h2><span class="lv">Levels ${lo}–${hi}</span><p>${esc(ph.note)}</p></div>
+      <div class="cols">
+        <div><p class="colh">Quest here</p><ol class="steps">${zs.map(z => `<li id="${slug(z.name)}">
+          <span class="lvl">${lvStr(z.lv)}</span> <b>${esc(z.name)}</b> ${z.isNew ? NEW : ''}
+          <span class="hub">${esc(z.hub)}</span>${z.tip ? `<span class="tip">${esc(z.tip)}</span>` : ''}</li>`).join('')}</ol></div>
+        <div><p class="colh">Dungeon slots</p><div class="dcards">${ds.length ? ds.map(d => `<article class="dcard${d.isNew ? ' n' : ''}" id="${slug(d.name)}">
+          <div class="dtop"><b>${esc(d.name)}</b>${d.isNew ? (d.newNote ? `<span class="newtag">${esc(d.newNote)}</span>` : NEW) : ''}<span class="when">Run at ${lvStr(d.go)}</span><span class="rng">listed ${esc(d.rng)}</span></div>
+          <div class="where">${esc(d.where)}</div>
+          <p>${esc(d.why)}</p>
+          ${d.quests ? `<ul>${d.quests.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}
+        </article>`).join('') : '<p class="skip">No dungeon slot in this bracket.</p>'}</div></div>
+      </div></section>`;
+  }).join('');
+}
+ruler(); phases();
+</script>
