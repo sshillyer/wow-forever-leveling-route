@@ -43,7 +43,7 @@
   function itemLink(it) {
     return it.id
       ? `<a href="${WH}item=${it.id}/${slug(it.n)}" target="_blank" rel="noopener">${esc(it.n)}</a>`
-      : `<a href="${search(it.n)}" target="_blank" rel="noopener" title="Search Wowhead">${esc(it.n)}</a>`;
+      : `<span class="nolink">${esc(it.n)}</span> <a class="find" href="${search(it.n)}" target="_blank" rel="noopener" title="Search Wowhead for ${esc(it.n)}">search ↗</a>`;
   }
   function itemList(items) {
     const shown = items.filter(usable);
@@ -67,7 +67,7 @@
     const qs = D.quests.filter(q => fac === 'Both' || q.f === fac);
     document.getElementById('quests').innerHTML = qs.map(q => `<article class="card">
       <h3><a href="${WH}quest=${q.id}/${slug(q.n)}" target="_blank" rel="noopener">${esc(q.n)}</a>
-        ${fac === 'Both' ? `<span class="fac ${q.f}">${q.f}</span>` : ''}${q.lv ? `<span class="qlv">level ${q.lv}</span>` : ''}</h3>
+        ${fac === 'Both' ? `<span class="fac ${q.f}">${q.f}</span>` : ''}${q.lv ? `<span class="qlv">req. level ${q.lv}</span>` : ''}</h3>
       <p class="sub giver">${q.giver ? `From ${npc(q.giver, q.where)}` : esc(q.start)}</p>
       ${q.turnin ? `<p class="sub">Turn in: ${npc(q.turnin, q.turninWhere)}</p>` : ''}
       <p>${esc(q.obj)}</p>

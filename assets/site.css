@@ -57,6 +57,8 @@ h2 { font-family: var(--display); font-weight: 700; font-size: 1.35rem; margin: 
 .items .ty { color: var(--muted); font-size: .85rem; white-space: nowrap; }
 .items a { font-weight: 600; }
 .items .nolink { font-weight: 600; }
+.items .find { font-size: .78rem; font-weight: 400; color: var(--muted); margin-left: 4px; }
+.items li > span:first-child, .items li > .nolink { flex: 1; }
 .none { color: var(--muted); font-style: italic; font-size: .92rem; }
 .giver a { font-weight: 600; }
 .foot { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; display: grid; gap: 6px; }
