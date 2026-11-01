@@ -42,7 +42,11 @@
   const profile = it => { const t = (it.s || []).join(' '); const p = PHYS.test(t), c = CAST.test(t); return p && !c ? 'phys' : c && !p ? 'cast' : 'any'; };
   const WANTS = { Warrior: 'phys', Rogue: 'phys', Hunter: 'phys', Mage: 'cast', Warlock: 'cast', Priest: 'cast' };
   const statOk = it => { const w = WANTS[cls], pr = profile(it); return !w || pr === 'any' || pr === w; };
-  const usable = it => !cls || ((ALL.includes(it.t) || USE[cls].includes(it.t)) && statOk(it));
+  // Hunters and Shamans learn Mail, and Warriors and Paladins learn Plate, at level 40.
+  // Below that, hide those pieces for them (dungeon default level used when an item has none).
+  const LEARN = { mail: { Hunter: 40, Shaman: 40 }, plate: { Warrior: 40, Paladin: 40 } };
+  const levelOk = it => { const need = (LEARN[it.t] || {})[cls]; return !need || (it.req || D.req || 0) >= need; };
+  const usable = it => !cls || ((ALL.includes(it.t) || USE[cls].includes(it.t)) && statOk(it) && levelOk(it));
   const typeLabel = it => (it.slot ? `${TYPE[it.t] || it.t} · ${it.slot}` : (TYPE[it.t] || it.t));
 
   const ITEMS = [];

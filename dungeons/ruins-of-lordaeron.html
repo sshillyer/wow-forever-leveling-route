@@ -23,7 +23,7 @@
   <div class="filters" role="group" aria-label="Filters">
     <div class="frow" id="f-class"></div>
     <div class="frow" id="f-fac"></div>
-    <p class="fnote">Class filter hides gear that class can't equip, plus caster-only gear for Warriors, Rogues and Hunters and physical-only gear for Mages, Warlocks and Priests. Items with mixed or neutral stats always show.</p>
+    <p class="fnote">Class filter hides gear that class can't equip yet (Hunters and Shamans get Mail, and Warriors and Paladins get Plate, at 40), caster-only gear for Warriors, Rogues and Hunters, and physical-only gear for Mages, Warlocks and Priests. Items with mixed or neutral stats always show.</p>
   </div>
 
   <h2>Quests</h2>
@@ -44,6 +44,7 @@
 <script>
 // IDs, quality and stats from Wowhead Forever (Nov 1).
 window.DUNGEON = {
+ "req": 15,
  "quests": [
   {
    "f": "Horde",
