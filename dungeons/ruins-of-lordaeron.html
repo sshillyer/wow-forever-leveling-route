@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ruins of Lordaeron · Horde Leveling Route</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Crimson+Text:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/wowhead.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html#ruins-of-lordaeron">← Leveling route</a>
+  <header class="dh">
+    <h1>Ruins of Lordaeron</h1>
+    <div class="meta"><span class="newtag">New in Forever</span><span class="lv">Levels 15–20 · run at 15–17</span><span>Above the Undercity, Tirisfal Glades</span></div>
+    <p>The Forsaken are reclaiming the Scourge-haunted ruins above the Undercity. Every Horde quest starts in Tirisfal, the Undercity or Silverpine, so pick them all up before you go in.</p>
+    <a class="guide" href="https://www.wowhead.com/forever/guide/ruins-of-lordaeron-dungeon-overview-location-rewards" target="_blank" rel="noopener">Wowhead dungeon guide ↗</a>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filters">
+    <div class="frow" id="f-class"></div>
+    <div class="frow" id="f-fac"></div>
+    <p class="fnote">Class filter hides gear that class can't equip or wouldn't want, by armor and weapon type. It doesn't check stats yet, so a Warrior still sees every mail piece.</p>
+  </div>
+
+  <h2>Quests</h2>
+  <div class="grid" id="quests"></div>
+
+  <h2>Bosses and loot</h2>
+  <div class="grid" id="bosses"></div>
+
+  <section class="foot">
+    <p>Boss loot and item IDs from <a href="https://www.method.gg/wow-forever/dungeons/ruins-of-lordaeron" target="_blank" rel="noopener">Method</a> and <a href="https://wowtbc.gg/warcraftforever/loot-tables/dungeons/ruins-of-lordaeron/" target="_blank" rel="noopener">wowtbc.gg</a>. Quest givers and objectives from <a href="https://www.warcrafttavern.com/forever/guides/the-ruins-of-lordaeron-quests/" target="_blank" rel="noopener">Warcraft Tavern</a>; quest rewards from <a href="https://conquestcapped.com/guides/wow-forever/wow-forever-dungeon-quests/" target="_blank" rel="noopener">Conquest Capped</a> (beta data, Oct 8).</p>
+    <ul>
+      <li>Quest reward items without a known Wowhead ID link to a Wowhead search instead. Hover the quest name for its rewards.</li>
+      <li>Questgiver links open a Wowhead search, since their NPC IDs aren't published yet.</li>
+      <li>wowtbc.gg also lists a Deathsworn Captain with Haunting Blade and Phantom Armor. Those are Shadowfang Keep drops in Classic, so they're left off here until confirmed.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+window.DUNGEON = {
+  quests: [
+    { f: 'Horde', id: 92422, n: "The Wrath of Rath'mael", lv: 15, giver: 'Deathguard Kristof', where: 'Tirisfal Glades (65, 60)',
+      obj: "Kill Rath'mael in the final graveyard. Tabitha Heartweaver in Silverpine offers it too.",
+      rewards: [{ n: 'Forsaken Greataxe', t: 'axe2h' }, { n: "Gnarled Necromancer's Staff", t: 'staff' }] },
+    { f: 'Horde', id: 92401, n: 'A Frightened Request', lv: 15, giver: 'Tabitha Heartweaver', where: 'The Sepulcher, Silverpine Forest (45, 43)',
+      obj: "Find Edward's body near the ghouls west of Rath'mael's graveyard.",
+      rewards: [{ n: "Edward's Knife", t: 'dagger' }, { n: "Tabitha's Cuffs", t: 'cloth', slot: 'Wrist' }] },
+    { f: 'Horde', id: 92421, n: "Light's Justice", lv: 15, giver: 'Morbin Lightbane', where: 'Royal Quarter, Undercity (58, 90)',
+      obj: 'Collect 25 Intact Limbs from undead inside.',
+      rewards: [{ n: 'The Stitcher', t: 'mace1h' }, { n: 'Spare Part Bindings', t: 'leather', slot: 'Wrist' }] },
+    { f: 'Horde', id: 95216, n: 'The New Plague', lv: 16, giver: 'Theodore Griffs', where: 'Apothecarium, Undercity (47, 72)',
+      obj: 'Loot a Highly Toxic Strain from Witherfang.',
+      rewards: [{ n: 'Plaguefang', id: 279876, t: 'sword1h' }, { n: 'Blight Gloves', t: 'cloth', slot: 'Hands' }] },
+    { f: 'Horde', id: 97288, n: 'Unending Torment', lv: 16, start: 'Starts from the Abominable Head, dropped by The Baron.',
+      turnin: 'Master Apothecary Faranell', turninWhere: 'Apothecarium, Undercity',
+      obj: 'A multi-step chain in the Apothecarium: deliver the head, rebuild the abomination, gather reagents. Rewards come at the end.',
+      rewards: [{ n: 'Monstrous Cleaver', t: 'sword2h' }, { n: 'Grave Shroud', t: 'back' }, { n: "Slain Baron's Signet", t: 'finger' }] },
+    { f: 'Horde', id: 95204, n: 'Crest of Lordaeron', lv: 16, start: 'Starts from the Crest, which spawns in one of five spots inside.',
+      turnin: 'Oran Snakewrithe', turninWhere: 'Magic Quarter, Undercity (73, 33)',
+      obj: 'Check the towers and the crypt behind the Banshee; the Crest moves each run.',
+      rewards: [{ n: 'Small Sack of Gems', t: 'bag' }] },
+    { f: 'Alliance', id: 95250, n: 'Abominable Creatures', lv: 16, giver: 'Captain Truman', where: 'inside, by the entrance',
+      obj: 'Bring him the Head of The Baron on the way out.',
+      rewards: [{ n: 'Monstrous Cleaver', t: 'sword2h' }, { n: 'Grave Shroud', t: 'back' }, { n: "Slain Baron's Signet", t: 'finger' }] },
+    { f: 'Alliance', id: 95195, n: 'Bloodied Insignia', lv: 16, start: 'Starts from a Bloodied Insignia looted from skeletons.',
+      turnin: 'General Marcus Jonathan', turninWhere: 'Valley of Heroes, Stormwind',
+      obj: 'Loot 10 Bloodied Insignia from undead inside.',
+      rewards: [{ n: 'Duty Bound Leggings', t: 'leather', slot: 'Legs' }, { n: 'Remembrance Armor', t: 'mail', slot: 'Chest' }] },
+    { f: 'Alliance', id: 92415, n: 'Remember That I Love You', lv: 15, start: "Starts from the Crumpled Paper by Edward's body.",
+      turnin: 'Avette Fellwood', turninWhere: 'Darkshire, Duskwood',
+      obj: 'Deliver the letter to Orphan Matron Nightingale in Stormwind, then to Avette in Duskwood.',
+      rewards: [{ n: 'Tarnished Locket', t: 'neck' }] },
+    { f: 'Alliance', id: 95189, n: 'Crest of Lordaeron', lv: 16, start: 'Starts from the Crest, which spawns in one of five spots inside.',
+      turnin: 'Lady Dena Kennedy', turninWhere: 'Royal Gallery, Stormwind Keep',
+      obj: 'The Crest moves each run.',
+      rewards: [{ n: 'Small Sack of Gems', t: 'bag' }] }
+  ],
+  bosses: [
+    { n: 'Witherfang', note: 'Spider. Drops the Highly Toxic Strain for The New Plague.', loot: [
+      { n: 'Atrophic Girdle', id: 271201, t: 'mail', slot: 'Waist' },
+      { n: 'Witherbite Bracers', id: 271202, t: 'leather', slot: 'Wrist' },
+      { n: 'Segmented Spider Leg', id: 271203, t: 'staff' }] },
+    { n: 'The Baron', note: "In King's Alley. Drops the Abominable Head for Unending Torment.", loot: [
+      { n: 'Meathook Slicer', id: 271204, t: 'dagger' },
+      { n: 'Abomination Bones', id: 271205, t: 'mail', slot: 'Chest' },
+      { n: 'Leftover Abomination Skin', id: 271206, t: 'cloth', slot: 'Chest' }] },
+    { n: 'Viktor the Vile', loot: [
+      { n: 'Vileblood Scimitar', id: 271218, t: 'sword1h' },
+      { n: 'Bloodied Chestwraps', id: 271212, t: 'leather', slot: 'Chest' },
+      { n: 'Vilewalkers', id: 271211, t: 'mail', slot: 'Feet' }] },
+    { n: 'The Abandoned', loot: [
+      { n: 'Scepter of the Abandoned', id: 271216, t: 'mace1h' },
+      { n: 'Grip of Fear', id: 271208, t: 'mail', slot: 'Hands' },
+      { n: "Rotmender's Leggings", id: 271207, t: 'cloth', slot: 'Legs' }] },
+    { n: 'Bjork', loot: [
+      { n: 'Corpse Chopper', id: 271217, t: 'axe2h' },
+      { n: 'Bonerust Leggings', id: 271209, t: 'mail', slot: 'Legs' },
+      { n: 'Tuskwrap Belt', id: 271210, t: 'cloth', slot: 'Waist' }] },
+    { n: "Rath'mael", final: true, note: "In the final graveyard. Kill for The Wrath of Rath'mael.", loot: [
+      { n: "Mirror of Rath'mael", id: 271213, t: 'shield' },
+      { n: 'Coldspire Staff', id: 271215, t: 'staff' },
+      { n: "Rotmender's Treads", id: 271214, t: 'cloth', slot: 'Feet' }] }
+  ]
+};
+</script>
+<script src="../assets/class-icons.js"></script>
+<script src="../assets/dungeon.js"></script>
+</body>
+</html>

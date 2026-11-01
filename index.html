@@ -1,3 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}</style>
+</head>
+<body>
 <title>Horde Leveling Route</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,6 +75,8 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spac
 .dcard.n { border-left-color: var(--new); }
 .dtop { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
 .dtop b { font-size: 1.08rem; }
+.dlink { color: var(--fg); text-decoration: underline; text-decoration-color: var(--dung); text-underline-offset: 3px; }
+.dlink:hover { color: var(--dung); }
 .dtop .when { font: .75rem var(--mono); color: var(--dung); }
 .dcard.n .when { color: var(--new); }
 .dtop .rng { font: .72rem var(--mono); color: var(--muted); }
@@ -116,6 +126,7 @@ h1 { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spac
   </section>
 </div>
 
+<script src="assets/wowhead.js"></script>
 <script>
 // Zones: questing spine. lv = [start, end] you'd actually be there.
 const ZONES = [
@@ -149,7 +160,7 @@ const DUNGEONS = [
   { go: [16, 18], rng: '13–18', name: 'Ragefire Chasm', where: 'Orgrimmar (Cleft of Shadow)',
     why: 'Short, Horde-only, six quests. Varimathras\'s quest starts in Undercity, so it\'s on your way.',
     quests: ['The Power to Destroy… (Varimathras, Undercity): leg armor', 'Hidden Enemies (Thrall, Orgrimmar): Kris, Hammer, Axe or Staff of Orgrimmar', 'Searching for / Returning the Lost Satchel (Thunder Bluff): bracers', 'Testing an Enemy\'s Strength, Slaying the Beast: experience'] },
-  { go: [15, 17], ph: 0, rng: '15–20', name: 'Ruins of Lordaeron', where: 'Above the Undercity, Tirisfal Glades', isNew: true,
+  { go: [15, 17], ph: 0, rng: '15–20', name: 'Ruins of Lordaeron', page: 'dungeons/ruins-of-lordaeron.html', where: 'Above the Undercity, Tirisfal Glades', isNew: true,
     why: 'Built for Undead: every Horde quest starts in Tirisfal, Undercity or Silverpine, and the weapon rewards are strong. Run it right after Silverpine, before you leave for the Barrens.',
     quests: ['The Wrath of Rath\'mael (Deathguard Kristof, Tirisfal): Forsaken Greataxe or Gnarled Necromancer\'s Staff', 'Unending Torment (drops from The Baron): Monstrous Cleaver, Grave Shroud or Slain Baron\'s Signet', 'Light\'s Justice (Morbin Lightbane, Undercity): The Stitcher or Spare Part Bindings', 'The New Plague (Theodore Griffs, Undercity): Plaguefang or Blight Gloves', 'A Frightened Request (Tabitha Heartweaver, Silverpine): Edward\'s Knife or Tabitha\'s Cuffs', 'Crest of Lordaeron (item spawns somewhere inside): Small Sack of Gems'] },
   { go: [19, 22], rng: '17–24', name: 'Wailing Caverns', where: 'The Barrens, near Lushwater Oasis',
@@ -246,7 +257,7 @@ function phases() {
           <span class="lvl">${lvStr(z.lv)}</span> <b>${esc(z.name)}</b> ${z.isNew ? NEW : ''}
           <span class="hub">${esc(z.hub)}</span>${z.tip ? `<span class="tip">${esc(z.tip)}</span>` : ''}</li>`).join('')}</ol></div>
         <div><p class="colh">Dungeon slots</p><div class="dcards">${ds.length ? ds.map(d => `<article class="dcard${d.isNew ? ' n' : ''}" id="${slug(d.name)}">
-          <div class="dtop"><b>${esc(d.name)}</b>${d.isNew ? (d.newNote ? `<span class="newtag">${esc(d.newNote)}</span>` : NEW) : ''}<span class="when">Run at ${lvStr(d.go)}</span><span class="rng">listed ${esc(d.rng)}</span></div>
+          <div class="dtop"><b>${d.page ? `<a class="dlink" href="${d.page}">${esc(d.name)} →</a>` : esc(d.name)}</b>${d.isNew ? (d.newNote ? `<span class="newtag">${esc(d.newNote)}</span>` : NEW) : ''}<span class="when">Run at ${lvStr(d.go)}</span><span class="rng">listed ${esc(d.rng)}</span></div>
           <div class="where">${esc(d.where)}</div>
           <p>${esc(d.why)}</p>
           ${d.quests ? `<ul>${d.quests.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}
@@ -256,3 +267,6 @@ function phases() {
 }
 ruler(); phases();
 </script>
+
+</body>
+</html>
