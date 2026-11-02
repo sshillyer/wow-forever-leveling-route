@@ -28,6 +28,21 @@
   let cls = '', fac = 'Horde';
   try { const s = JSON.parse(localStorage.getItem('route-filters') || '{}'); if (s.cls) cls = s.cls; if (s.fac) fac = s.fac; } catch (e) {}
 
+  // ?route=alliance|horde: opened from that route page. Sets the quest faction and points the back link at that route.
+  const route = new URLSearchParams(location.search).get('route');
+  if (route === 'alliance' || route === 'horde') {
+    fac = route === 'alliance' ? 'Alliance' : 'Horde';
+    const back = document.querySelector('a.back');
+    if (back) {
+      back.href = (route === 'alliance' ? '../alliance.html#' : '../index.html#') + document.body.dataset.dungeon;
+      back.textContent = route === 'alliance' ? '← Alliance route' : '← Horde route';
+    }
+    document.title = document.title.replace(/· \w+ Leveling Route/, `· ${route === 'alliance' ? 'Alliance' : 'Horde'} Leveling Route`);
+  } else if (fac !== 'Both' && D.quests.length && !D.quests.some(q => q.f === fac || q.f === 'Both')) {
+    // Opened directly with a faction that has no quests here (e.g. a Horde filter on the Stockade): show the other side.
+    fac = fac === 'Horde' ? 'Alliance' : 'Horde';
+  }
+
   // Stat profile from the item's stat lines: physical (Str/Agi/AP), caster (Int/Spi/spell power/mp5), or neutral.
   const PHYS = /Strength|Agility|Attack Power/i, CAST = /Intellect|Spirit|spells|healing|mana per 5/i;
   const profile = it => { const t = (it.s || []).join(' '); const p = PHYS.test(t), c = CAST.test(t); return p && !c ? 'phys' : c && !p ? 'cast' : 'any'; };

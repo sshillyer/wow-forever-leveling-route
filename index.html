@@ -99,10 +99,15 @@ a.q1 { color: var(--q1); } a.q2 { color: var(--q2); } a.q3 { color: var(--q3); }
 .notes { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: .92rem; display: grid; gap: 8px; max-width: 80ch; }
 .notes h2 { font-family: var(--display); font-size: 1.1rem; color: var(--fg); margin: 0; }
 .notes ul { margin: 0; padding-left: 18px; }
+.routes { display: flex; gap: 14px; font: 600 .78rem var(--body); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.routes a { color: var(--muted); text-decoration: none; }
+.routes a:hover { color: var(--gold); }
+.routes [aria-current] { color: var(--fg); border-bottom: 2px solid var(--gold); }
 </style>
 
 <div class="wrap">
   <header>
+    <nav class="routes" aria-label="Routes"><a href="index.html" aria-current="page">Horde route</a><a href="alliance.html">Alliance route</a></nav>
     <h1>Horde Leveling Route</h1>
     <p class="lede">Undead start, Tirisfal to 60. The questing spine is the classic Horde route that TUGs and most guides follow, with Forever's new zones and dungeons slotted in. Dungeon slots are placed where their Horde quests are on your path and their rewards still matter.</p>
     <div class="legend">
@@ -144,6 +149,7 @@ a.q1 { color: var(--q1); } a.q2 { color: var(--q2); } a.q3 { color: var(--q3); }
 <script src="dungeons/blackfathom-deeps.data.js"></script>
 <script src="dungeons/excavation-site.data.js"></script>
 <script src="dungeons/city-of-dalaran.data.js"></script>
+<script src="dungeons/gnomeregan.data.js"></script>
 <script src="dungeons/razorfen-kraul.data.js"></script>
 <script src="dungeons/scarlet-monastery.data.js"></script>
 <script src="dungeons/razorfen-downs.data.js"></script>
@@ -199,6 +205,8 @@ const DUNGEONS = [
   { go: [29, 33], rng: '28–33', name: 'City of Dalaran', page: 'dungeons/city-of-dalaran.html', data: 'city-of-dalaran', where: 'Alterac Mountains (sewer entrance)', isNew: true,
     why: 'Undead-friendly: the attunement and two quests start in Tarren Mill and Undercity. Start the chain during your Hillsbrad leg.',
     quests: ['Key to the City → Prison Break-In (Magus Wordeen Voidglare, Tarren Mill): attunement, needs the Dalaran Sewer Key', 'Heart of Disruption (end of the chain): Battle Spaulders, Enchanted Sandals or Striking Staff', 'The Grave Knight (Melisara, Tarren Mill): boots or bracers', 'Source of Power (Doctor Martin Felben, Undercity): Unstable Power Core or Construct Cloak', 'Opportunistic Education (sewer entrance): Solid Gold Band or Larcenist\'s Belt'] },
+  { go: [31, 34], rng: '25–38', name: 'Gnomeregan', page: 'dungeons/gnomeregan.html', data: 'gnomeregan', where: 'Dun Morogh, west of Ironforge (deep in Alliance land)',
+    why: 'Optional. Rig Wars from Nogg in Orgrimmar rewards strong legs, but the trip through Dun Morogh is long. Skip unless a group is going.' },
   { go: [30, 33], rng: '29–38', name: 'Razorfen Kraul', page: 'dungeons/razorfen-kraul.html', data: 'razorfen-kraul', where: 'Southern Barrens',
     why: 'Optional. Several quests start in Thunder Bluff and the Barrens. Skip if Dalaran filled this window.' },
   { go: [32, 42], rng: '30–45', name: 'Scarlet Monastery', page: 'dungeons/scarlet-monastery.html', data: 'scarlet-monastery', where: 'Tirisfal Glades, a flight from Undercity',
@@ -292,7 +300,7 @@ function phases() {
           <span class="lvl">${lvStr(z.lv)}</span> <b>${esc(z.name)}</b> ${z.isNew ? NEW : ''}
           <span class="hub">${esc(z.hub)}</span>${z.tip ? `<span class="tip">${esc(z.tip)}</span>` : ''}</li>`).join('')}</ol></div>
         <div><p class="colh">Dungeon slots</p><div class="dcards">${ds.length ? ds.map(d => `<article class="dcard${d.isNew ? ' n' : ''}" id="${slug(d.name)}">
-          <div class="dtop"><b>${d.page ? `<a class="dlink" href="${d.page}">${esc(d.name)} →</a>` : esc(d.name)}</b>${d.isNew ? (d.newNote ? `<span class="newtag">${esc(d.newNote)}</span>` : NEW) : ''}<span class="when">Run at ${lvStr(d.go)}</span><span class="rng">listed ${esc(d.rng)}</span></div>
+          <div class="dtop"><b>${d.page ? `<a class="dlink" href="${d.page}?route=horde">${esc(d.name)} →</a>` : esc(d.name)}</b>${d.isNew ? (d.newNote ? `<span class="newtag">${esc(d.newNote)}</span>` : NEW) : ''}<span class="when">Run at ${lvStr(d.go)}</span><span class="rng">listed ${esc(d.rng)}</span></div>
           <div class="where">${esc(d.where)}</div>
           <p>${esc(d.why)}</p>
           ${questList(d)}
@@ -300,6 +308,7 @@ function phases() {
       </div></section>`;
   }).join('');
 }
+DUNGEONS.sort((a, b) => a.go[0] - b.go[0] || a.go[1] - b.go[1]);
 ruler(); phases(); if (window.WHI) WHI.refresh();
 </script>
 
